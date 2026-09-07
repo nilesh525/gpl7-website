@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GPL-7 — Gauripur Premier League, Season 7</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@500;600;700;800&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sindoor:#AC1F2D;
+    --sindoor-dark:#7C1620;
+    --maroon:#2B1416;
+    --marigold:#E29A3C;
+    --marigold-light:#F3C574;
+    --shell:#F7F0E3;
+    --shell-dim:#EFE4D0;
+    --ink:#2B1416;
+    --white:#FFFFFF;
+    --green:#3F6B4B;
+    --max-w:960px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--shell);
+    color:var(--ink);
+    font-family:'Work Sans',sans-serif;
+    line-height:1.55;
+  }
+  h1,h2,h3,.display{
+    font-family:'Baloo Da 2',sans-serif;
+    font-weight:700;
+    color:var(--maroon);
+    margin:0;
+  }
+  a{color:inherit;text-decoration:none;}
+  img,svg{display:block;max-width:100%;}
+  .wrap{max-width:var(--max-w);margin:0 auto;padding:0 20px;}
+
+  /* NAV */
+  .nav{
+    position:sticky; top:0; z-index:50;
+    background:var(--maroon);
+    border-bottom:3px solid var(--marigold);
+  }
+  .nav .wrap{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;}
+  .nav .brand{color:var(--shell);font-family:'Baloo Da 2',sans-serif;font-weight:800;font-size:1.3rem;letter-spacing:.5px;}
+  .nav .brand span{color:var(--marigold-light);}
+  .nav ul{list-style:none;display:flex;gap:22px;margin:0;padding:0;}
+  .nav a{color:var(--shell);font-size:.95rem;font-weight:500;}
+  .nav a:hover{color:var(--marigold-light);}
+  .nav-toggle{display:none;background:none;border:none;color:var(--shell);font-size:1.6rem;cursor:pointer;}
+  @media (max-width:680px){
+    .nav ul{
+      position:absolute; top:100%; left:0; right:0;
+      flex-direction:column; gap:0;
+      background:var(--maroon);
+      max-height:0; overflow:hidden;
+      transition:max-height .25s ease;
+      border-bottom:3px solid var(--marigold);
+    }
+    .nav ul.open{max-height:320px;}
+    .nav ul li{border-top:1px solid rgba(247,240,227,.15);}
+    .nav ul li a{display:block;padding:14px 20px;}
+    .nav-toggle{display:block;}
+  }
+
+  /* ALPONA DIVIDER */
+  .alpona{width:100%;height:22px;overflow:hidden;}
+  .alpona svg{width:100%;height:100%;}
+
+  /* HERO */
+  .hero{
+    background:
+      radial-gradient(circle at 15% 20%, rgba(226,154,60,.18), transparent 40%),
+      radial-gradient(circle at 85% 75%, rgba(172,31,45,.15), transparent 45%),
+      var(--maroon);
+    color:var(--shell);
+    padding:64px 0 56px;
+    text-align:center;
+    position:relative;
+  }
+  .hero .kicker{
+    color:var(--marigold-light);
+    font-size:.85rem;
+    font-weight:600;
+    margin-bottom:10px;
+  }
+  .hero h1{
+    font-size:clamp(2.6rem,10vw,4.2rem);
+    color:var(--shell);
+    line-height:1;
+  }
+  .hero h1 span{color:var(--marigold-light);}
+  .hero .sub{
+    font-size:1.15rem;
+    color:var(--marigold-light);
+    margin-top:8px;
+    font-family:'Baloo Da 2',sans-serif;
+    font-weight:600;
+  }
+  .hero .dates{
+    display:flex; flex-wrap:wrap; justify-content:center; gap:14px;
+    margin-top:30px;
+  }
+  .date-pill{
+    background:rgba(247,240,227,.08);
+    border:1px solid rgba(226,154,60,.5);
+    border-radius:999px;
+    padding:10px 20px;
+    font-size:.9rem;
+  }
+  .date-pill b{display:block;font-size:1.05rem;color:var(--marigold-light);font-family:'Baloo Da 2',sans-serif;}
+  .hero .cta{margin-top:34px;}
+  .btn{
+    display:inline-block;
+    background:var(--marigold);
+    color:var(--maroon);
+    font-weight:700;
+    padding:14px 30px;
+    border-radius:8px;
+    font-size:1.05rem;
+    border:none;
+    cursor:pointer;
+  }
+  .btn:hover{background:var(--marigold-light);}
+  .btn.outline{
+    background:transparent;
+    color:var(--shell);
+    border:2px solid var(--marigold);
+    margin-left:10px;
+  }
+  @media (max-width:480px){ .btn.outline{margin-left:0;margin-top:10px;} }
+
+  /* SECTIONS */
+  section{padding:56px 0;}
+  section .eyebrow{
+    color:var(--sindoor);
+    font-weight:600;
+    font-size:.85rem;
+    margin-bottom:6px;
+  }
+  section h2{font-size:1.9rem;margin-bottom:22px;}
+  .lead{max-width:640px;color:#5A3A3D;margin-bottom:28px;}
+
+  .grid{display:grid;gap:18px;grid-template-columns:repeat(3,1fr);}
+  @media (max-width:720px){.grid{grid-template-columns:1fr 1fr;}}
+  @media (max-width:480px){.grid{grid-template-columns:1fr;}}
+
+  .card{
+    background:var(--white);
+    border:1px solid var(--shell-dim);
+    border-left:4px solid var(--sindoor);
+    border-radius:6px;
+    padding:20px;
+  }
+  .card h3{font-size:1.05rem;margin-bottom:8px;}
+  .card p{margin:0;font-size:.92rem;color:#5A3A3D;}
+  .card .num{
+    font-family:'Baloo Da 2',sans-serif;
+    color:var(--marigold);
+    font-size:1.6rem;
+    display:block;
+    margin-bottom:4px;
+  }
+
+  .panel{
+    background:var(--white);
+    border:1px solid var(--shell-dim);
+    border-radius:10px;
+    padding:26px;
+  }
+
+  table{width:100%;border-collapse:collapse;font-size:.92rem;}
+  th,td{padding:10px 8px;text-align:left;border-bottom:1px solid var(--shell-dim);}
+  th{color:var(--sindoor);font-family:'Baloo Da 2',sans-serif;font-size:.85rem;}
+  tr:last-child td{border-bottom:none;}
+  .table-wrap{overflow-x:auto;}
+
+  ul.rules{margin:0;padding-left:18px;}
+  ul.rules li{margin-bottom:8px;font-size:.94rem;}
+
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  @media (max-width:680px){.split{grid-template-columns:1fr;}}
+
+  .prize-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--shell-dim);font-size:.94rem;}
+  .prize-row:last-child{border-bottom:none;}
+  .prize-row b{color:var(--sindoor);}
+
+  .banner{
+    background:var(--sindoor);
+    color:var(--shell);
+    border-radius:10px;
+    padding:22px;
+    text-align:center;
+    font-family:'Baloo Da 2',sans-serif;
+    font-weight:600;
+    font-size:1.05rem;
+  }
+
+  .reg-box{
+    background:var(--maroon);
+    color:var(--shell);
+    border-radius:12px;
+    padding:32px;
+    text-align:center;
+  }
+  .reg-box h3{color:var(--shell);font-size:1.4rem;margin-bottom:10px;}
+  .reg-box p{color:var(--marigold-light);margin-bottom:20px;}
+  .steps{text-align:left;max-width:420px;margin:0 auto 24px;color:var(--shell);font-size:.92rem;}
+  .steps li{margin-bottom:10px;}
+  .upi{
+    display:inline-block;
+    background:rgba(247,240,227,.08);
+    border:1px dashed var(--marigold);
+    border-radius:8px;
+    padding:10px 16px;
+    font-weight:600;
+    letter-spacing:.5px;
+    margin-top:6px;
+  }
+
+  footer{
+    background:var(--maroon);
+    color:var(--marigold-light);
+    text-align:center;
+    padding:30px 0;
+    font-size:.85rem;
+  }
+  footer a{color:var(--shell);text-decoration:underline;}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <div class="brand">GPL<span>-7</span></div>
+    <button class="nav-toggle" aria-label="Menu" onclick="document.getElementById('navlinks').classList.toggle('open')">☰</button>
+    <ul id="navlinks">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#register">Register</a></li>
+      <li><a href="#format">Tournament</a></li>
+      <li><a href="#rules">Rules</a></li>
+      <li><a href="#prizes">Prizes</a></li>
+      <li><a href="#points">Points Table</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero" id="home">
+  <div class="wrap">
+    <div class="kicker">DURGA PUJA SPECIAL</div>
+    <h1>GPL<span>-7</span></h1>
+    <div class="sub">Gauripur Premier League · Season 7</div>
+    <div class="dates">
+      <div class="date-pill">Registration Opens<br><b>6 September</b></div>
+      <div class="date-pill">Tournament Begins<br><b>18 October · Maha Saptami</b></div>
+      <div class="date-pill">Teams<br><b>6 · Round Robin</b></div>
+    </div>
+    <div class="cta">
+      <a class="btn" href="#register">Register as a Player</a>
+      <a class="btn outline" href="#format">See the Format</a>
+    </div>
+  </div>
+</header>
+
+<div class="alpona">
+  <svg viewBox="0 0 400 20" preserveAspectRatio="none">
+    <path d="M0 10 Q10 0 20 10 T40 10 T60 10 T80 10 T100 10 T120 10 T140 10 T160 10 T180 10 T200 10 T220 10 T240 10 T260 10 T280 10 T300 10 T320 10 T340 10 T360 10 T380 10 T400 10" fill="none" stroke="#E29A3C" stroke-width="1.5"/>
+    <g fill="#AC1F2D">
+      <circle cx="10" cy="10" r="2"/><circle cx="30" cy="10" r="2"/><circle cx="50" cy="10" r="2"/><circle cx="70" cy="10" r="2"/>
+      <circle cx="90" cy="10" r="2"/><circle cx="110" cy="10" r="2"/><circle cx="130" cy="10" r="2"/><circle cx="150" cy="10" r="2"/>
+      <circle cx="170" cy="10" r="2"/><circle cx="190" cy="10" r="2"/><circle cx="210" cy="10" r="2"/><circle cx="230" cy="10" r="2"/>
+      <circle cx="250" cy="10" r="2"/><circle cx="270" cy="10" r="2"/><circle cx="290" cy="10" r="2"/><circle cx="310" cy="10" r="2"/>
+      <circle cx="330" cy="10" r="2"/><circle cx="350" cy="10" r="2"/><circle cx="370" cy="10" r="2"/><circle cx="390" cy="10" r="2"/>
+    </g>
+  </svg>
+</div>
+
+<section id="about">
+  <div class="wrap">
+    <div class="eyebrow">About the League</div>
+    <h2>A festival week, a cricket season</h2>
+    <p class="lead">GPL-7 brings Gauripur's cricketers together right through Durga Puja — six teams, an open auction, and a season that runs from Maha Saptami into the final.</p>
+    <div class="grid">
+      <div class="card"><span class="num">6</span><h3>Teams</h3><p>Roughly 12 players each, about 72 players total.</p></div>
+      <div class="card"><span class="num">15</span><h3>League Matches</h3><p>Round robin — every team plays every other team once.</p></div>
+      <div class="card"><span class="num">4</span><h3>Semi-Finalists</h3><p>Top 4 on points advance to the knockout stage.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="register">
+  <div class="wrap">
+    <div class="reg-box">
+      <h3>Player Registration</h3>
+      <p>Registration opens 6 September. Register and pay first — teams are assigned later through the auction.</p>
+      <ol class="steps">
+        <li>Fill in your name, mobile number, and playing role (Batsman / Bowler / All-rounder / Wicket-keeper).</li>
+        <li>Pay the ₹200 registration fee via UPI.</li>
+        <li>Upload your payment screenshot and UTR / transaction ID in the form.</li>
+        <li>Your registration stays <b>PENDING</b> until the committee verifies the payment against the actual transaction.</li>
+      </ol>
+      <a class="btn" href="https://forms.gle/uhZWVrozW1WfCTmv7W1WfCTmv7" target="_blank" rel="noopener">Open Registration Form</a>
+      <div><span class="upi">UPI: 9508909795</span></div>
+      <p style="margin-top:18px;font-size:.85rem;color:var(--marigold-light);">You do not choose your team. All registered players go into the GPL-7 auction.</p>
+    </div>
+  </div>
+</section>
+
+<div class="alpona">
+  <svg viewBox="0 0 400 20" preserveAspectRatio="none">
+    <path d="M0 10 Q10 0 20 10 T40 10 T60 10 T80 10 T100 10 T120 10 T140 10 T160 10 T180 10 T200 10 T220 10 T240 10 T260 10 T280 10 T300 10 T320 10 T340 10 T360 10 T380 10 T400 10" fill="none" stroke="#E29A3C" stroke-width="1.5"/>
+    <g fill="#AC1F2D">
+      <circle cx="10" cy="10" r="2"/><circle cx="30" cy="10" r="2"/><circle cx="50" cy="10" r="2"/><circle cx="70" cy="10" r="2"/>
+      <circle cx="90" cy="10" r="2"/><circle cx="110" cy="10" r="2"/><circle cx="130" cy="10" r="2"/><circle cx="150" cy="10" r="2"/>
+      <circle cx="170" cy="10" r="2"/><circle cx="190" cy="10" r="2"/><circle cx="210" cy="10" r="2"/><circle cx="230" cy="10" r="2"/>
+      <circle cx="250" cy="10" r="2"/><circle cx="270" cy="10" r="2"/><circle cx="290" cy="10" r="2"/><circle cx="310" cy="10" r="2"/>
+      <circle cx="330" cy="10" r="2"/><circle cx="350" cy="10" r="2"/><circle cx="370" cy="10" r="2"/><circle cx="390" cy="10" r="2"/>
+    </g>
+  </svg>
+</div>
+
+<section id="format">
+  <div class="wrap">
+    <div class="eyebrow">Format &amp; Points</div>
+    <h2>How the season plays out</h2>
+    <div class="split">
+      <div class="panel">
+        <h3 style="margin-bottom:14px;">League Stage</h3>
+        <table>
+          <tr><td>Overs per innings</td><td>12</td></tr>
+          <tr><td>Powerplay</td><td>4 overs</td></tr>
+          <tr><td>Win</td><td>2 points</td></tr>
+          <tr><td>Tied match</td><td>Super Over</td></tr>
+          <tr><td>Teams level on points</td><td>Decided by NRR</td></tr>
+        </table>
+      </div>
+      <div class="panel">
+        <h3 style="margin-bottom:14px;">Semi-Final &amp; Final</h3>
+        <table>
+          <tr><td>Overs per innings</td><td>15</td></tr>
+          <tr><td>Powerplay</td><td>5 overs</td></tr>
+          <tr><td>Rain / interruptions</td><td>DLS method applied</td></tr>
+          <tr><td>Scoring &amp; stats</td><td>Tracked live on CricHeroes</td></tr>
+        </table>
+      </div>
+    </div>
+    <div style="margin-top:24px;" class="panel">
+      <h3 style="margin-bottom:14px;">Bowling Overs Distribution</h3>
+      <p style="font-size:.92rem;color:#5A3A3D;margin-bottom:14px;">Maximum 5 bowlers per innings, 3 overs max per bowler, spread as evenly as possible.</p>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Match Type</th><th>Overs</th><th>Split across 5 bowlers</th></tr>
+          <tr><td>League (12 overs)</td><td>12</td><td>3 + 3 + 2 + 2 + 2</td></tr>
+          <tr><td>Semi-final / Final (15 overs)</td><td>15</td><td>3 + 3 + 3 + 3 + 3</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="rules">
+  <div class="wrap">
+    <div class="eyebrow">Rules</div>
+    <h2>Playing conditions</h2>
+    <div class="panel">
+      <ul class="rules">
+        <li>Only a legal bowling action is allowed — throw-arm bowling is strictly prohibited.</li>
+        <li>LBW is not applicable. All other standard ICC rules apply.</li>
+        <li>Umpire decisions are final and binding.</li>
+        <li>Misbehaviour with an umpire, the committee, or fellow participants can lead to immediate termination and a ban from future tournaments.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="prizes">
+  <div class="wrap">
+    <div class="eyebrow">Prizes</div>
+    <h2>What's on the line</h2>
+    <div class="split">
+      <div class="panel">
+        <h3 style="margin-bottom:10px;">Team Prizes</h3>
+        <div class="prize-row"><span>Winner</span><b>₹12,000 + Trophy</b></div>
+        <div class="prize-row"><span>Runner-up</span><b>₹10,000 + Trophy</b></div>
+        <div class="prize-row"><span>Winning team, per player</span><b>₹400</b></div>
+        <div class="prize-row"><span>Runner-up team, per player</span><b>₹300</b></div>
+      </div>
+      <div class="panel">
+        <h3 style="margin-bottom:10px;">Individual Prizes</h3>
+        <div class="prize-row"><span>Man of the Match</span><b>₹100 / match</b></div>
+        <div class="prize-row"><span>Player of the Tournament</span><b>₹1,500</b></div>
+        <div class="prize-row"><span>Best Batter</span><b>₹500</b></div>
+        <div class="prize-row"><span>Best Bowler</span><b>₹500</b></div>
+        <div class="prize-row"><span>Best Fielder</span><b>₹500</b></div>
+      </div>
+    </div>
+    <div class="panel" style="margin-top:18px;">
+      <h3 style="margin-bottom:10px;">Special Performance Bonuses</h3>
+      <div class="prize-row"><span>50 runs at 250+ strike rate</span><b>₹100</b></div>
+      <div class="prize-row"><span>100 runs at 200+ strike rate</span><b>₹200</b></div>
+      <div class="prize-row"><span>5+ wickets in a match</span><b>₹100</b></div>
+      <div class="prize-row"><span>3+ catches in a match (excl. wicket-keeper)</span><b>₹100</b></div>
+    </div>
+    <div class="banner" style="margin-top:22px;">More prizes, more chances to win back your ₹200 registration fee! 😜</div>
+  </div>
+</section>
+
+<section id="points">
+  <div class="wrap">
+    <div class="eyebrow">League Table</div>
+    <h2>Points table</h2>
+    <p class="lead">Updated as the season goes on — check back after each round.</p>
+    <div class="panel table-wrap">
+      <table>
+        <tr><th>#</th><th>Team</th><th>P</th><th>W</th><th>L</th><th>Pts</th><th>NRR</th></tr>
+        <tr><td>1</td><td>Team 1</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>2</td><td>Team 2</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>3</td><td>Team 3</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>4</td><td>Team 4</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>5</td><td>Team 5</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>6</td><td>Team 6</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <p>GPL-7 — Gauripur Premier League, Season 7 · Durga Puja Special</p>
+    <p>Questions about registration or payment? Reach the committee via the number shared on the registration form.</p>
+    <p>Live scores &amp; stats on <a href="https://cricheroes.com" target="_blank" rel="noopener">CricHeroes</a></p>
+  </div>
+</footer>
+
+</body>
+</html>
