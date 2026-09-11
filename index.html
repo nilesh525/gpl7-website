@@ -62,7 +62,7 @@
       transition:max-height .25s ease;
       border-bottom:3px solid var(--marigold);
     }
-    .nav ul.open{max-height:320px;}
+    .nav ul.open{max-height:400px;}
     .nav ul li{border-top:1px solid rgba(247,240,227,.15);}
     .nav ul li a{display:block;padding:14px 20px;}
     .nav-toggle{display:block;}
@@ -125,6 +125,7 @@
     font-size:1.05rem;
     border:none;
     cursor:pointer;
+    font-family:inherit;
   }
   .btn:hover{background:var(--marigold-light);}
   .btn.outline{
@@ -223,6 +224,60 @@
     margin-top:6px;
   }
 
+  /* REGISTERED PLAYERS SECTION */
+  .stat-grid{display:grid;gap:16px;grid-template-columns:repeat(3,1fr);margin-bottom:28px;}
+  @media (max-width:600px){.stat-grid{grid-template-columns:1fr;}}
+  .stat-card{
+    background:var(--white);
+    border:1px solid var(--shell-dim);
+    border-radius:10px;
+    padding:22px;
+    text-align:center;
+  }
+  .stat-card .stat-num{
+    font-family:'Baloo Da 2',sans-serif;
+    font-size:2.2rem;
+    color:var(--sindoor);
+    display:block;
+  }
+  .stat-card .stat-label{font-size:.85rem;color:#5A3A3D;margin-top:4px;}
+  .stat-card.pending .stat-num{color:var(--marigold);}
+  .loading-text{color:#8a6a6d;font-size:.9rem;font-style:italic;}
+  .badge{
+    display:inline-block;
+    padding:3px 10px;
+    border-radius:999px;
+    font-size:.78rem;
+    font-weight:600;
+  }
+  .badge.verified{background:#E4EFE6;color:var(--green);}
+  .badge.unassigned{background:var(--shell-dim);color:#8a6a6d;}
+  .status-form{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:18px;
+  }
+  .status-form input{
+    flex:1;
+    min-width:180px;
+    padding:12px 14px;
+    border-radius:8px;
+    border:1px solid var(--shell-dim);
+    font-family:inherit;
+    font-size:.95rem;
+  }
+  .status-result{
+    margin-top:14px;
+    padding:16px;
+    border-radius:8px;
+    background:var(--shell-dim);
+    font-size:.92rem;
+    display:none;
+  }
+  .status-result.show{display:block;}
+  .status-result.not-found{background:#F6DCDC;color:var(--sindoor-dark);}
+
   footer{
     background:var(--maroon);
     color:var(--marigold-light);
@@ -242,6 +297,7 @@
     <ul id="navlinks">
       <li><a href="#home">Home</a></li>
       <li><a href="#register">Register</a></li>
+      <li><a href="#players">Players</a></li>
       <li><a href="#format">Tournament</a></li>
       <li><a href="#rules">Rules</a></li>
       <li><a href="#prizes">Prizes</a></li>
@@ -308,6 +364,62 @@
       <a class="btn" href="https://forms.gle/uhZWVrozW1WfCTmv7W1WfCTmv7" target="_blank" rel="noopener">Open Registration Form</a>
       <div><span class="upi">UPI: 9508909795</span></div>
       <p style="margin-top:18px;font-size:.85rem;color:var(--marigold-light);">You do not choose your team. All registered players go into the GPL-7 auction.</p>
+    </div>
+  </div>
+</section>
+
+<div class="alpona">
+  <svg viewBox="0 0 400 20" preserveAspectRatio="none">
+    <path d="M0 10 Q10 0 20 10 T40 10 T60 10 T80 10 T100 10 T120 10 T140 10 T160 10 T180 10 T200 10 T220 10 T240 10 T260 10 T280 10 T300 10 T320 10 T340 10 T360 10 T380 10 T400 10" fill="none" stroke="#E29A3C" stroke-width="1.5"/>
+    <g fill="#AC1F2D">
+      <circle cx="10" cy="10" r="2"/><circle cx="30" cy="10" r="2"/><circle cx="50" cy="10" r="2"/><circle cx="70" cy="10" r="2"/>
+      <circle cx="90" cy="10" r="2"/><circle cx="110" cy="10" r="2"/><circle cx="130" cy="10" r="2"/><circle cx="150" cy="10" r="2"/>
+      <circle cx="170" cy="10" r="2"/><circle cx="190" cy="10" r="2"/><circle cx="210" cy="10" r="2"/><circle cx="230" cy="10" r="2"/>
+      <circle cx="250" cy="10" r="2"/><circle cx="270" cy="10" r="2"/><circle cx="290" cy="10" r="2"/><circle cx="310" cy="10" r="2"/>
+      <circle cx="330" cy="10" r="2"/><circle cx="350" cy="10" r="2"/><circle cx="370" cy="10" r="2"/><circle cx="390" cy="10" r="2"/>
+    </g>
+  </svg>
+</div>
+
+<section id="players">
+  <div class="wrap">
+    <div class="eyebrow">Live Registration</div>
+    <h2>Registered Players</h2>
+    <p class="lead">Counts update live from the registration sheet. Verified players are the ones confirmed by the committee after payment checks.</p>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <span class="stat-num" id="statTotal">—</span>
+        <span class="stat-label">Total Registrations</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num" id="statVerified" style="color:var(--green);">—</span>
+        <span class="stat-label">Verified</span>
+      </div>
+      <div class="stat-card pending">
+        <span class="stat-num" id="statPending">—</span>
+        <span class="stat-label">Pending Verification</span>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-bottom:24px;">
+      <h3 style="margin-bottom:14px;">Check My Registration Status</h3>
+      <div class="status-form">
+        <input type="tel" id="statusMobile" placeholder="Enter your mobile number" inputmode="numeric">
+        <button class="btn" onclick="checkStatus()">Check Status</button>
+      </div>
+      <div class="status-result" id="statusResult"></div>
+    </div>
+
+    <div class="panel table-wrap">
+      <h3 style="margin-bottom:14px;">Verified Player Roster</h3>
+      <p class="loading-text" id="rosterLoading">Loading roster…</p>
+      <table id="rosterTable" style="display:none;">
+        <thead>
+          <tr><th>Name</th><th>Role</th><th>Team</th></tr>
+        </thead>
+        <tbody id="rosterBody"></tbody>
+      </table>
     </div>
   </div>
 </section>
@@ -437,6 +549,95 @@
     <p>Live scores &amp; stats on <a href="https://cricheroes.com" target="_blank" rel="noopener">CricHeroes</a></p>
   </div>
 </footer>
+
+<script>
+  // ====== EDIT THIS: paste your Apps Script Web App URL here ======
+  const API_URL = "https://script.google.com/macros/s/AKfycbzpRCh5IzgIKvntFP26yuDZDB1hs887odgPr3mfPG95LwE17TI65uhejFa2RXOkdpA-0A/exec";
+  // ===================================================================
+
+  async function loadCounts() {
+    try {
+      const res = await fetch(API_URL + "?action=count");
+      const data = await res.json();
+      document.getElementById("statTotal").textContent = data.total ?? "0";
+      document.getElementById("statVerified").textContent = data.verified ?? "0";
+      document.getElementById("statPending").textContent = data.pending ?? "0";
+    } catch (err) {
+      document.getElementById("statTotal").textContent = "—";
+      document.getElementById("statVerified").textContent = "—";
+      document.getElementById("statPending").textContent = "—";
+    }
+  }
+
+  async function loadRoster() {
+    const loadingEl = document.getElementById("rosterLoading");
+    const tableEl = document.getElementById("rosterTable");
+    const bodyEl = document.getElementById("rosterBody");
+    try {
+      const res = await fetch(API_URL + "?action=list");
+      const data = await res.json();
+      const players = data.players || [];
+      if (players.length === 0) {
+        loadingEl.textContent = "No verified players yet. Check back soon!";
+        return;
+      }
+      bodyEl.innerHTML = players.map(function (p) {
+        var teamBadge = (p.team && p.team !== "Unassigned")
+          ? p.team
+          : '<span class="badge unassigned">Unassigned</span>';
+        return "<tr><td>" + escapeHtml(p.name) + "</td><td>" + escapeHtml(p.role) + "</td><td>" + teamBadge + "</td></tr>";
+      }).join("");
+      loadingEl.style.display = "none";
+      tableEl.style.display = "table";
+    } catch (err) {
+      loadingEl.textContent = "Couldn't load the roster right now. Please refresh in a bit.";
+    }
+  }
+
+  async function checkStatus() {
+    const mobileInput = document.getElementById("statusMobile");
+    const resultEl = document.getElementById("statusResult");
+    const mobile = mobileInput.value.replace(/\D/g, "");
+
+    if (!mobile) {
+      resultEl.className = "status-result show not-found";
+      resultEl.textContent = "Please enter a mobile number.";
+      return;
+    }
+
+    resultEl.className = "status-result show";
+    resultEl.textContent = "Checking…";
+
+    try {
+      const res = await fetch(API_URL + "?action=status&mobile=" + encodeURIComponent(mobile));
+      const data = await res.json();
+      if (!data.found) {
+        resultEl.className = "status-result show not-found";
+        resultEl.textContent = "No registration found for this mobile number.";
+        return;
+      }
+      var statusBadge = data.status === "VERIFIED"
+        ? '<span class="badge verified">VERIFIED</span>'
+        : '<span class="badge unassigned">' + escapeHtml(data.status) + '</span>';
+      resultEl.className = "status-result show";
+      resultEl.innerHTML =
+        "<b>" + escapeHtml(data.name) + "</b><br>" +
+        "Status: " + statusBadge + "<br>" +
+        (data.team ? "Team: " + escapeHtml(data.team) : "Team: not yet assigned");
+    } catch (err) {
+      resultEl.className = "status-result show not-found";
+      resultEl.textContent = "Something went wrong. Please try again.";
+    }
+  }
+
+  function escapeHtml(str) {
+    return String(str == null ? "" : str)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  loadCounts();
+  loadRoster();
+</script>
 
 </body>
 </html>

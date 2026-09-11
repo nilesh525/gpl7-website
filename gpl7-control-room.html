@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>GPL-7 Control Room</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sindoor:#AC1F2D;
+    --sindoor-dark:#7C1620;
+    --maroon:#2B1416;
+    --marigold:#E29A3C;
+    --marigold-light:#F3C574;
+    --shell:#F7F0E3;
+    --shell-dim:#EFE4D0;
+    --ink:#2B1416;
+    --white:#FFFFFF;
+    --green:#3F6B4B;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--shell);
+    color:var(--ink);
+    font-family:'Work Sans',sans-serif;
+    line-height:1.5;
+  }
+  h1,h2,h3{
+    font-family:'Baloo Da 2',sans-serif;
+    font-weight:700;
+    color:var(--maroon);
+    margin:0;
+  }
+  .wrap{max-width:1100px;margin:0 auto;padding:0 20px;}
+
+  /* LOGIN SCREEN */
+  #loginScreen{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--maroon);
+  }
+  .login-box{
+    background:var(--white);
+    border-radius:14px;
+    padding:38px 34px;
+    max-width:360px;
+    width:90%;
+    text-align:center;
+    box-shadow:0 20px 50px rgba(0,0,0,.3);
+  }
+  .login-box h1{font-size:1.5rem;color:var(--sindoor);margin-bottom:6px;}
+  .login-box p{font-size:.88rem;color:#8a6a6d;margin-bottom:22px;}
+  .login-box input{
+    width:100%;
+    padding:13px 14px;
+    border-radius:8px;
+    border:1px solid var(--shell-dim);
+    font-family:inherit;
+    font-size:.95rem;
+    margin-bottom:14px;
+  }
+  .login-box .btn{width:100%;}
+  .login-error{color:var(--sindoor);font-size:.85rem;margin-top:10px;display:none;}
+  .login-error.show{display:block;}
+
+  /* SHARED */
+  .btn{
+    display:inline-block;
+    background:var(--marigold);
+    color:var(--maroon);
+    font-weight:700;
+    padding:12px 22px;
+    border-radius:8px;
+    font-size:.95rem;
+    border:none;
+    cursor:pointer;
+    font-family:inherit;
+  }
+  .btn:hover{background:var(--marigold-light);}
+  .btn:disabled{opacity:.5;cursor:not-allowed;}
+  .btn.small{padding:7px 14px;font-size:.82rem;}
+  .btn.verify{background:var(--green);color:var(--white);}
+  .btn.verify:hover{background:#345a3e;}
+  .btn.reject{background:var(--sindoor);color:var(--white);}
+  .btn.reject:hover{background:var(--sindoor-dark);}
+  .btn.outline{background:transparent;border:2px solid var(--marigold);color:var(--maroon);}
+
+  /* DASHBOARD */
+  #dashboard{display:none;}
+  .topbar{
+    background:var(--maroon);
+    border-bottom:3px solid var(--marigold);
+    padding:18px 0;
+  }
+  .topbar .wrap{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+  .topbar h1{color:var(--shell);font-size:1.3rem;}
+  .topbar h1 span{color:var(--marigold-light);}
+  .topbar .btn{padding:9px 18px;font-size:.85rem;}
+
+  main{padding:30px 0 60px;}
+
+  .stat-strip{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:24px;}
+  .stat-chip{
+    background:var(--white);
+    border:1px solid var(--shell-dim);
+    border-radius:8px;
+    padding:12px 18px;
+    font-size:.85rem;
+  }
+  .stat-chip b{font-family:'Baloo Da 2',sans-serif;font-size:1.15rem;color:var(--sindoor);display:block;}
+
+  .toolbar{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-bottom:18px;
+  }
+  .toolbar input, .toolbar select{
+    padding:11px 14px;
+    border-radius:8px;
+    border:1px solid var(--shell-dim);
+    font-family:inherit;
+    font-size:.9rem;
+  }
+  .toolbar input{flex:1;min-width:200px;}
+
+  .panel{
+    background:var(--white);
+    border:1px solid var(--shell-dim);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .table-wrap{overflow-x:auto;}
+  table{width:100%;border-collapse:collapse;font-size:.88rem;min-width:900px;}
+  th,td{padding:12px 10px;text-align:left;border-bottom:1px solid var(--shell-dim);vertical-align:middle;}
+  th{
+    color:var(--sindoor);
+    font-family:'Baloo Da 2',sans-serif;
+    font-size:.8rem;
+    text-transform:uppercase;
+    letter-spacing:.4px;
+    background:var(--shell);
+    position:sticky;
+    top:0;
+  }
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:#FBF7EE;}
+
+  .badge{
+    display:inline-block;
+    padding:4px 10px;
+    border-radius:999px;
+    font-size:.75rem;
+    font-weight:700;
+  }
+  .badge.verified{background:#E4EFE6;color:var(--green);}
+  .badge.pending{background:#FDF1DC;color:#9C6B1F;}
+  .badge.rejected{background:#F6DCDC;color:var(--sindoor-dark);}
+
+  .row-actions{display:flex;gap:6px;flex-wrap:wrap;}
+  .team-select{
+    padding:6px 8px;
+    border-radius:6px;
+    border:1px solid var(--shell-dim);
+    font-family:inherit;
+    font-size:.82rem;
+  }
+  .screenshot-link{color:var(--sindoor);text-decoration:underline;font-size:.82rem;}
+  .loading-text{padding:30px;text-align:center;color:#8a6a6d;font-style:italic;}
+  .save-note{font-size:.75rem;color:var(--green);margin-left:6px;display:none;}
+  .save-note.show{display:inline;}
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <h1>GPL-7 Control Room</h1>
+    <p>Committee access only. Enter the admin password to continue.</p>
+    <input type="password" id="passwordInput" placeholder="Admin password" onkeydown="if(event.key==='Enter') login()">
+    <button class="btn" onclick="login()">Log In</button>
+    <div class="login-error" id="loginError">Incorrect password. Please try again.</div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <div class="topbar">
+    <div class="wrap">
+      <h1>GPL-7 <span>Control Room</span></h1>
+      <button class="btn outline" onclick="logout()">Log Out</button>
+    </div>
+  </div>
+
+  <main>
+    <div class="wrap">
+      <div class="stat-strip">
+        <div class="stat-chip"><b id="chipTotal">—</b>Total</div>
+        <div class="stat-chip"><b id="chipVerified">—</b>Verified</div>
+        <div class="stat-chip"><b id="chipPending">—</b>Pending</div>
+        <div class="stat-chip"><b id="chipRejected">—</b>Rejected</div>
+      </div>
+
+      <div class="toolbar">
+        <input type="text" id="searchBox" placeholder="Search by name or mobile number…" oninput="renderTable()">
+        <select id="statusFilter" onchange="renderTable()">
+          <option value="ALL">All statuses</option>
+          <option value="PENDING">Pending</option>
+          <option value="VERIFIED">Verified</option>
+          <option value="REJECTED">Rejected</option>
+        </select>
+        <button class="btn outline" onclick="loadData()">↻ Refresh</button>
+      </div>
+
+      <div class="panel table-wrap">
+        <p class="loading-text" id="tableLoading">Loading registrations…</p>
+        <table id="dataTable" style="display:none;">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Mobile</th>
+              <th>Role</th>
+              <th>UTR / Txn ID</th>
+              <th>Screenshot</th>
+              <th>Status</th>
+              <th>Team</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="dataBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  // ====== EDIT THIS: paste your Apps Script Web App URL here ======
+  const API_URL = "https://script.google.com/macros/s/AKfycbzpRCh5IzgIKvntFP26yuDZDB1hs887odgPr3mfPG95LwE17TI65uhejFa2RXOkdpA-0A/exec";
+  // ====== EDIT THIS: must match ADMIN_PASSWORD in your Apps Script exactly ======
+  const ADMIN_PASSWORD = "gpl7_admin";
+  // ================================================================================
+
+  const TEAM_OPTIONS = ["Unassigned", "Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6"];
+
+  let allRows = [];
+  let sessionPassword = null;
+
+  function login() {
+    const input = document.getElementById("passwordInput").value;
+    const errorEl = document.getElementById("loginError");
+    if (input !== ADMIN_PASSWORD) {
+      errorEl.classList.add("show");
+      return;
+    }
+    errorEl.classList.remove("show");
+    sessionPassword = input;
+    document.getElementById("loginScreen").style.display = "none";
+    document.getElementById("dashboard").style.display = "block";
+    loadData();
+  }
+
+  function logout() {
+    sessionPassword = null;
+    document.getElementById("dashboard").style.display = "none";
+    document.getElementById("loginScreen").style.display = "flex";
+    document.getElementById("passwordInput").value = "";
+  }
+
+  async function loadData() {
+    const loadingEl = document.getElementById("tableLoading");
+    const tableEl = document.getElementById("dataTable");
+    loadingEl.style.display = "block";
+    loadingEl.textContent = "Loading registrations…";
+    tableEl.style.display = "none";
+
+    try {
+      const res = await fetch(API_URL + "?action=adminList&password=" + encodeURIComponent(sessionPassword));
+      const data = await res.json();
+      if (data.error) {
+        loadingEl.textContent = "Server rejected the request: " + data.error + ". Try logging out and back in.";
+        return;
+      }
+      allRows = data.list || [];
+      updateStatChips();
+      renderTable();
+      loadingEl.style.display = "none";
+      tableEl.style.display = "table";
+    } catch (err) {
+      loadingEl.textContent = "Couldn't load registrations. Check your connection and try Refresh.";
+    }
+  }
+
+  function updateStatChips() {
+    let verified = 0, pending = 0, rejected = 0;
+    allRows.forEach(function (r) {
+      const s = (r.status || "PENDING").toUpperCase();
+      if (s === "VERIFIED") verified++;
+      else if (s === "REJECTED") rejected++;
+      else pending++;
+    });
+    document.getElementById("chipTotal").textContent = allRows.length;
+    document.getElementById("chipVerified").textContent = verified;
+    document.getElementById("chipPending").textContent = pending;
+    document.getElementById("chipRejected").textContent = rejected;
+  }
+
+  function renderTable() {
+    const search = document.getElementById("searchBox").value.trim().toLowerCase();
+    const statusFilter = document.getElementById("statusFilter").value;
+    const bodyEl = document.getElementById("dataBody");
+
+    const filtered = allRows.filter(function (r) {
+      const status = (r.status || "PENDING").toUpperCase();
+      if (statusFilter !== "ALL" && status !== statusFilter) return false;
+      if (!search) return true;
+      const haystack = ((r.name || "") + " " + (r.mobile || "")).toLowerCase();
+      return haystack.indexOf(search) !== -1;
+    });
+
+    if (filtered.length === 0) {
+      bodyEl.innerHTML = '<tr><td colspan="8" style="text-align:center;color:#8a6a6d;padding:24px;">No matching registrations.</td></tr>';
+      return;
+    }
+
+    bodyEl.innerHTML = filtered.map(function (r) {
+      const status = (r.status || "PENDING").toUpperCase();
+      const badgeClass = status === "VERIFIED" ? "verified" : (status === "REJECTED" ? "rejected" : "pending");
+      const teamOptionsHtml = TEAM_OPTIONS.map(function (t) {
+        const selected = (r.team || "Unassigned") === t ? "selected" : "";
+        return '<option value="' + escapeHtml(t) + '" ' + selected + '>' + escapeHtml(t) + '</option>';
+      }).join("");
+
+      return (
+        '<tr data-row="' + r.row + '">' +
+          '<td>' + escapeHtml(r.name) + '</td>' +
+          '<td>' + escapeHtml(r.mobile) + '</td>' +
+          '<td>' + escapeHtml(r.role) + '</td>' +
+          '<td>' + escapeHtml(r.utr) + '</td>' +
+          '<td>' + (r.screenshot ? '<a class="screenshot-link" href="' + escapeAttr(r.screenshot) + '" target="_blank" rel="noopener">View</a>' : '—') + '</td>' +
+          '<td><span class="badge ' + badgeClass + '">' + status + '</span></td>' +
+          '<td>' +
+            '<select class="team-select" onchange="saveTeam(' + r.row + ', this.value, this)">' + teamOptionsHtml + '</select>' +
+          '</td>' +
+          '<td>' +
+            '<div class="row-actions">' +
+              '<button class="btn small verify" onclick="setStatus(' + r.row + ', \'VERIFIED\', this)">Verify</button>' +
+              '<button class="btn small reject" onclick="setStatus(' + r.row + ', \'REJECTED\', this)">Reject</button>' +
+              '<span class="save-note">Saved ✓</span>' +
+            '</div>' +
+          '</td>' +
+        '</tr>'
+      );
+    }).join("");
+  }
+
+  async function setStatus(row, status, btnEl) {
+    const rowEls = btnEl.closest("tr");
+    const buttons = rowEls.querySelectorAll("button");
+    buttons.forEach(function (b) { b.disabled = true; });
+
+    try {
+      const res = await fetch(API_URL, {
+        method: "POST",
+        body: JSON.stringify({ password: sessionPassword, action: "setStatus", row: row, status: status })
+      });
+      const data = await res.json();
+      if (data.error) {
+        alert("Couldn't save: " + data.error);
+      } else {
+        const local = allRows.find(function (r) { return r.row === row; });
+        if (local) local.status = status;
+        updateStatChips();
+        renderTable();
+      }
+    } catch (err) {
+      alert("Network error while saving. Please try again.");
+    } finally {
+      buttons.forEach(function (b) { b.disabled = false; });
+    }
+  }
+
+  async function saveTeam(row, team, selectEl) {
+    selectEl.disabled = true;
+    try {
+      const res = await fetch(API_URL, {
+        method: "POST",
+        body: JSON.stringify({ password: sessionPassword, action: "setTeam", row: row, team: team })
+      });
+      const data = await res.json();
+      if (data.error) {
+        alert("Couldn't save team: " + data.error);
+      } else {
+        const local = allRows.find(function (r) { return r.row === row; });
+        if (local) local.team = team;
+        const note = selectEl.closest("tr").querySelector(".save-note");
+        note.classList.add("show");
+        setTimeout(function () { note.classList.remove("show"); }, 1500);
+      }
+    } catch (err) {
+      alert("Network error while saving. Please try again.");
+    } finally {
+      selectEl.disabled = false;
+    }
+  }
+
+  function escapeHtml(str) {
+    return String(str == null ? "" : str)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+  function escapeAttr(str) {
+    return escapeHtml(str).replace(/"/g, "&quot;");
+  }
+</script>
+
+</body>
+</html>
